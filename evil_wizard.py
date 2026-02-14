@@ -35,8 +35,19 @@ class EvilWizard(Character):
         print(f"{self.name} regenerates 5 health! Current health: {self.health}")
 
 # Create Archer class
-
+class Archer(Character):
+    def __init__(self, name):
+        super().__init__(name, health=100, attack_power=40)
+    
+    def evade(self):
+        self.evade
 # Create Paladin class 
+class Paladin(Character):
+    def __init__(self, name):
+        super().__init__(name, health=90, attack_power=25) #add bonus power somehow
+
+    def divine_shield(self):
+        print(f'')
 
 def create_character():
     print("Choose your character class:")
