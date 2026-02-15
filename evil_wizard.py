@@ -12,6 +12,13 @@ class Character:
         if opponent.health <= 0:
             print(f"{opponent.name} has been defeated!")
 
+    def heal(self): #restores 25 health points
+        if ({self.max_health} - {self.health}) < 25:  #Checks if health points are less than 25 points away from the max health
+            self.health = ({self.max_health} - {self.health} + {self.health}) # Finds the difference of health and max health, then adds it back to make sure it doesn't exceed max health
+        else:
+            self.health = ({self.health} + 25) # adds 25 health points to current health
+
+        print(f'{} has been healed!  {} now has {self.health}/{self.max_health}')
     def display_stats(self):
         print(f"{self.name}'s Stats - Health: {self.health}/{self.max_health}, Attack Power: {self.attack_power}")
 
@@ -64,9 +71,9 @@ def create_character():
     elif class_choice == '2':
         return Mage(name)
     elif class_choice == '3':
-        pass  # Implement Archer class
+        return Paladin(name)
     elif class_choice == '4':
-        pass  # Implement Paladin class
+        return Archer(name)
     else:
         print("Invalid choice. Defaulting to Warrior.")
         return Warrior(name)
