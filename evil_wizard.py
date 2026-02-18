@@ -9,6 +9,13 @@ class Character:
         self.max_health = health  
         self.evade_chance = 0
         self.shield_active = False
+        self.wall = 0
+
+        #Attribute checks to make sure attributes are ran by every character
+        self.double_shot_chance = 0
+        self.holy_strike_chance = 0
+        self.execute_chance = 0
+        
 
     def attack(self, opponent):
         #this function checks if evade being used and resets evade to 0
@@ -41,8 +48,26 @@ class Character:
             total_damage += bonus_damage
             print(f'{self.name} uses Holy Strike for an additional {bonus_damage} damage, causing {total_damage} damage!')
 
+        #Execute - this is an attack that has a really low chance of occurence, but will complete kill the opponent
+        if random.random < self.execute_chance:
+            damage = opponent.health
+            opponent.health -= damage
+            print(f'{self.name} uses the Execute attack, deals {damage} damage.')
+
+        if opponent.wall > 0: 
+            damage = self.random_power // 4
+            print(f"{opponent.name}'s wall reduces the damage!")
+        
+        opponent.health -= damage
+        print(f'{self.name} attacks {opponent.name} for {damage} damage')
+
+
         if opponent.health <= 0:
             print(f"{opponent.name} has been defeated!")
+    
+    def end_turn(self):
+        if self.wall > 0:
+            self.wall -= 1
 
     def heal(self): #restores 25 health points
         if (self.max_health - self.health) < 25:  #Checks if health points are less than 25 points away from the max health
@@ -59,6 +84,11 @@ class Character:
 class Warrior(Character):
     def __init__(self, name):
         super().__init__(name, health=140, attack_power=25)
+        self.execute_chance = 0.05
+
+    def special_ability(self, opponent=None):
+        self.wall = 3
+        print(f'{self.name} builds a defensive wall!  Damage reduced for 3 turns.')
 
 # Mage class (inherits from Character)
 class Mage(Character):
@@ -149,6 +179,9 @@ def battle(player, wizard):
         if wizard.health > 0:
             wizard.regenerate()
             wizard.attack(player)
+
+        player.end_turn()
+        wizard.end_turn()
 
         if player.health <= 0:
             print(f"{player.name} has been defeated!")
