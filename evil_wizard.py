@@ -7,10 +7,40 @@ class Character:
         self.health = health
         self.attack_power = attack_power
         self.max_health = health  
+        self.evade_chance = 0
+        self.shield_active = False
 
     def attack(self, opponent):
-        opponent.health -= random.randint(self.attack_power - 10, self.attack_power) #Modifying the attack system to have random attack damage within specified range
-        print(f"{self.name} attacks {opponent.name} for {self.attack_power} damage!")
+        #this function checks if evade being used and resets evade to 0
+        if random.random() < opponent.evade_chance:
+            print(f'{opponent.name} evaded the attack!')
+            opponent.evade_chance = 0
+            return
+        #This checks if shield is being used and establishes the damage dealt
+        if opponent.shield_active:
+            self.random_power = self.random_power // 2
+            opponent.shield_active = False
+            print(f"{opponent.name}'s shield reduced the damage!")
+
+        self.random_power = random.randint(max(1, self.attack_power - 10), self.attack_power) #Modifying the attack system to have random attack damage within specified range
+        opponent.health -= self.random_power
+        print(f"{self.name} attacks {opponent.name} for {self.random_power} damage!")
+
+        #double_shot - This function checks if double shot is triggered.  It generates a random float (0-1) and compares it to the double shot chance, then moves on from there
+        if random.random < self.double_shot_chance:
+            second_random_power = random.randint(max(1, self.attack_power - 10), self.attack_power)
+            opponent.health -= second_random_power
+            total_damage += second_random_power
+            print(f'{self.name} fires Double Shot for an extra {second_random_power} damage!')
+        print(f'Total damage dealth: {total_damage}')
+
+        #Holy Strike
+        if random.random < self.holy_strike_chance:
+            bonus_damage = self.random_power * .25
+            opponent.health -= bonus_damage
+            total_damage += bonus_damage
+            print(f'{self.name} uses Holy Strike for an additional {bonus_damage} damage, causing {total_damage} damage!')
+
         if opponent.health <= 0:
             print(f"{opponent.name} has been defeated!")
 
@@ -48,18 +78,24 @@ class EvilWizard(Character):
 class Archer(Character):
     def __init__(self, name):
         super().__init__(name, health=100, attack_power=40)
+        self.double_shot_chance = 0.2 # creates a 20% chance that each attack will be a double shot
     
-    def evade(self):
-        print(f'{self.name} has evaded the Wizards attack!  {self.name} takes no damage!')
+    #This function determines if evade will be successfully used or not, it uses self.evade_chance to set the probabilty that evade will work 75% of the time
+    def special_ability(self, opponent=None):
+        self.evade_chance = 0.75
+        print(f'{self.name} prepares to evade the next attack!')
 
 # Create Paladin class 
 class Paladin(Character):
     def __init__(self, name):
         super().__init__(name, health=90, attack_power=25) #add bonus power somehow
-
-    def divine_shield(self):
+        self.holy_strike_chance = 0.2 #creates a 20% chance that each attack will include holy strike
+    
+    #this function calls the shield special ability.  It also adds 5 health whenever attacks are blocked
+    def special_ability(self, opponent=None):
+        self.shield_active = True
         self.health += 5
-        print(f'{self.name} had blocked the wizards attack with the Divine Shield!  {self.name} received no damage! \n {self.name} gains +5 health')
+        print(f'{self.name} had blocked the wizards attack with the Divine Shield!  {self.name} received reduced damage! \n {self.name} gains +5 health')
 
 def create_character():
     print("Choose your character class:")
@@ -102,7 +138,7 @@ def battle(player, wizard):
                 player.special_ability(Character)
                 action_taken = True
             elif choice == '3':
-                player.heal(Character)
+                player.heal()
                 action_taken = True
             elif choice == '4':
                 player.display_stats()
