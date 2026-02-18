@@ -25,27 +25,27 @@ class Character:
             return
         #This checks if shield is being used and establishes the damage dealt
         if opponent.shield_active:
-            self.random_power = self.random_power // 2
+            damage = damage // 2 #changed from self.random_power to damage so it wouldn't constantly be modified
             opponent.shield_active = False
             print(f"{opponent.name}'s shield reduced the damage!")
 
         self.random_power = random.randint(max(1, self.attack_power - 10), self.attack_power) #Modifying the attack system to have random attack damage within specified range
         total_damage = self.random_power #initializing total_damage before modifying it
-        damage = self.random_power
+        damage = self.random_power #localizing variable so they can be modified
+        total_damage = damage
         opponent.health -= self.random_power
         print(f"{self.name} attacks {opponent.name} for {self.random_power} damage!")
 
         #double_shot - This function checks if double shot is triggered.  It generates a random float (0-1) and compares it to the double shot chance, then moves on from there
         if random.random() < self.double_shot_chance:
-            second_random_power = random.randint(max(1, self.attack_power - 10), self.attack_power)
-            opponent.health -= second_random_power
-            total_damage += second_random_power #initializing total_damage before modifying it
-            print(f'{self.name} fires Double Shot for an extra {second_random_power} damage!')
-        print(f'Total damage dealt: {total_damage}')
-
+            extra_damage = random.randint(max(1, self.attack_power - 10), self.attack_power)
+            opponent.health -= extra_damage
+            total_damage += extra_damage #initializing total_damage before modifying it
+            print(f'{self.name} fires Double Shot for an extra {total_damage} damage!')
+        
         #Holy Strike
         if random.random() < self.holy_strike_chance:
-            bonus_damage = self.random_power * .25
+            bonus_damage = int(damage * .25) #updating the value to an int
             opponent.health -= bonus_damage
             total_damage += bonus_damage
             print(f'{self.name} uses Holy Strike for an additional {bonus_damage} damage, causing {total_damage} damage!')
@@ -57,11 +57,13 @@ class Character:
             print(f'{self.name} uses the Execute attack, deals {damage} damage.')
         #Warrior wall.  Reduces damage for certain number of turns.  Is triggered by engaging the special ability
         if opponent.wall > 0: 
-            damage = self.random_power // 4
+            damage = damage // 4
             print(f"{opponent.name}'s wall reduces the damage!")
         
         opponent.health -= damage
-        print(f'{self.name} attacks {opponent.name} for {damage} damage')
+        # redundant print(f'{self.name} attacks {opponent.name} for {damage} damage')
+
+        print(f'Total damage dealt: {total_damage}')
 
 
         if opponent.health <= 0:
