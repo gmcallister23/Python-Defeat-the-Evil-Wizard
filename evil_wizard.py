@@ -17,6 +17,7 @@ class Character:
         self.holy_strike_chance = 0
         self.execute_chance = 0
         self.random_regen = 0
+        self.superstrike_chance = 0
         
 
     def attack(self, opponent):
@@ -67,6 +68,12 @@ class Character:
         if random.random() < self.random_regen:
             self.health = self.max_health
             print(f'{self.name} has randomly regenerated all their health!')
+
+        #The Dark Wizard can randomly generate super strike, a strike 3x the original power
+        if random.random() < self.superstrike_chance:
+            ss_damage = damage * 3
+            opponent.health -= ss_damage
+            print{f'{self.name} uses superstike for 3x damage! Damage: {ss_damage}.'}
         
         opponent.health -= damage
         # redundant print(f'{self.name} attacks {opponent.name} for {damage} damage')
@@ -121,6 +128,7 @@ class Mage(Character):
 class EvilWizard(Character):
     def __init__(self, name):
         super().__init__(name, health=150, attack_power=15)
+        self.superstrike_chance = 0.5
 
     def regenerate(self):
         self.health += 5
