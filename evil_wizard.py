@@ -18,7 +18,15 @@ class Character:
         
 
     def attack(self, opponent):
-        #this function checks if evade being used and resets evade to 0
+
+        self.random_power = random.randint(max(1, self.attack_power - 10), self.attack_power) #Modifying the attack system to have random attack damage within specified range
+        total_damage = self.random_power #initializing total_damage before modifying it
+        damage = self.random_power #localizing variable so they can be modified
+        total_damage = damage
+        opponent.health -= self.random_power
+        print(f"{self.name} attacks {opponent.name} for {self.random_power} damage!")
+
+         #this function checks if evade being used and resets evade to 0
         if random.random() < opponent.evade_chance:
             print(f'{opponent.name} evaded the attack!')
             opponent.evade_chance = 0
@@ -28,13 +36,6 @@ class Character:
             damage = damage // 2 #changed from self.random_power to damage so it wouldn't constantly be modified
             opponent.shield_active = False
             print(f"{opponent.name}'s shield reduced the damage!")
-
-        self.random_power = random.randint(max(1, self.attack_power - 10), self.attack_power) #Modifying the attack system to have random attack damage within specified range
-        total_damage = self.random_power #initializing total_damage before modifying it
-        damage = self.random_power #localizing variable so they can be modified
-        total_damage = damage
-        opponent.health -= self.random_power
-        print(f"{self.name} attacks {opponent.name} for {self.random_power} damage!")
 
         #double_shot - This function checks if double shot is triggered.  It generates a random float (0-1) and compares it to the double shot chance, then moves on from there
         if random.random() < self.double_shot_chance:
@@ -146,9 +147,9 @@ def create_character():
     elif class_choice == '2':
         return Mage(name)
     elif class_choice == '3':
-        return Paladin(name)
-    elif class_choice == '4':
         return Archer(name)
+    elif class_choice == '4':
+        return Paladin(name)
     else:
         print("Invalid choice. Defaulting to Warrior.")
         return Warrior(name)
@@ -169,7 +170,7 @@ def battle(player, wizard):
                 player.attack(wizard)
                 action_taken = True
             elif choice == '2':
-                player.special_ability(Character)
+                player.special_ability(wizard)
                 action_taken = True
             elif choice == '3':
                 player.heal()
