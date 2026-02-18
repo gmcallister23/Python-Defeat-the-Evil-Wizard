@@ -30,30 +30,32 @@ class Character:
             print(f"{opponent.name}'s shield reduced the damage!")
 
         self.random_power = random.randint(max(1, self.attack_power - 10), self.attack_power) #Modifying the attack system to have random attack damage within specified range
+        total_damage = self.random_power #initializing total_damage before modifying it
+        damage = self.random_power
         opponent.health -= self.random_power
         print(f"{self.name} attacks {opponent.name} for {self.random_power} damage!")
 
         #double_shot - This function checks if double shot is triggered.  It generates a random float (0-1) and compares it to the double shot chance, then moves on from there
-        if random.random < self.double_shot_chance:
+        if random.random() < self.double_shot_chance:
             second_random_power = random.randint(max(1, self.attack_power - 10), self.attack_power)
             opponent.health -= second_random_power
-            total_damage += second_random_power
+            total_damage += second_random_power #initializing total_damage before modifying it
             print(f'{self.name} fires Double Shot for an extra {second_random_power} damage!')
-        print(f'Total damage dealth: {total_damage}')
+        print(f'Total damage dealt: {total_damage}')
 
         #Holy Strike
-        if random.random < self.holy_strike_chance:
+        if random.random() < self.holy_strike_chance:
             bonus_damage = self.random_power * .25
             opponent.health -= bonus_damage
             total_damage += bonus_damage
             print(f'{self.name} uses Holy Strike for an additional {bonus_damage} damage, causing {total_damage} damage!')
 
         #Execute - this is an attack that has a really low chance of occurence, but will complete kill the opponent
-        if random.random < self.execute_chance:
+        if random.random() < self.execute_chance:
             damage = opponent.health
             opponent.health -= damage
             print(f'{self.name} uses the Execute attack, deals {damage} damage.')
-
+        #Warrior wall.  Reduces damage for certain number of turns.  Is triggered by engaging the special ability
         if opponent.wall > 0: 
             damage = self.random_power // 4
             print(f"{opponent.name}'s wall reduces the damage!")
