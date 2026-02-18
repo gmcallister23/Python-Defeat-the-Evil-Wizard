@@ -10,11 +10,13 @@ class Character:
         self.evade_chance = 0
         self.shield_active = False
         self.wall = 0
+        self.random_regen = 0
 
         #Attribute checks to make sure attributes are ran by every character
         self.double_shot_chance = 0
         self.holy_strike_chance = 0
         self.execute_chance = 0
+        self.random_regen = 0
         
 
     def attack(self, opponent):
@@ -60,6 +62,11 @@ class Character:
         if opponent.wall > 0: 
             damage = damage // 4
             print(f"{opponent.name}'s wall reduces the damage!")
+
+        #The mage can radomly regenerate it's health
+        if random.random() < self.random_regen:
+            self.health = self.max_health
+            print(f'{self.name} has randomly regenerated all their health!')
         
         opponent.health -= damage
         # redundant print(f'{self.name} attacks {opponent.name} for {damage} damage')
@@ -98,7 +105,17 @@ class Warrior(Character):
 # Mage class (inherits from Character)
 class Mage(Character):
     def __init__(self, name):
-        super().__init__(name, health=100, attack_power=35)
+        super().__init__(name, health=100, attack_power=25)
+        self.random_regen = 0.33
+
+    #The mage has a special attack ability that allows it to cause double damage, but sacrifices the original amount of damage to be caused
+    def special_ability(self, opponent=None):
+        damage = random.randint(max(1, self.attack_power - 10), self.attack_power)
+        self.health -= damage #Mage loses the original amount of damage in health for this ability
+        print(f'{self.name} uses Superbold and sacrifices {damage} health. Current health: {self.health}/{self.max_health}')
+        double_damage = damage * 2
+        opponent.health = double_damage
+        print(f'Superbolt hits {opponent.name} for {double_damage} damage.')
 
 # EvilWizard class (inherits from Character)
 class EvilWizard(Character):
