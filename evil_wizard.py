@@ -18,6 +18,7 @@ class Character:
         self.execute_chance = 0
         self.random_regen = 0
         self.superstrike_chance = 0
+        self.immunity_cloak = 0
         
 
     def attack(self, opponent):
@@ -74,6 +75,12 @@ class Character:
             ss_damage = damage * 3
             damage = ss_damage
             print(f'{self.name} uses superstike for 3x damage! Damage: {ss_damage}.')
+            
+        #Check is Dark Wizard has immunity cloak engaged
+        if opponent.immunity_cloak > 0:
+            print(f'{opponent.name} is immune to damage this turn!')
+            opponent.immunity_cloak -= 1
+            return
         
         opponent.health -= damage
         # redundant print(f'{self.name} attacks {opponent.name} for {damage} damage')
@@ -129,6 +136,13 @@ class EvilWizard(Character):
     def __init__(self, name):
         super().__init__(name, health=150, attack_power=15)
         self.superstrike_chance = 0.5
+        self.immunity_cloak = 0 #Immunity cloak allows wizard to take no damage for set number of turns
+
+    #The Evil Wizard randomly becomes invincible to turns and receives no damage during that time
+    def try_immunity_cloak(self):
+        if self.immunity_cloak == 0 and random.random() < 0.33: #sets the random chance of invincibility
+            self.immunity_cloak = 2
+            print(f'{self.name} becomes temporarily invincible for 2 turns')
 
     def regenerate(self):
         self.health += 5
@@ -207,6 +221,7 @@ def battle(player, wizard):
                 print("Invalid choice. Try again.")
 
         if wizard.health > 0:
+            wizard.try_immunity_cloak() #checks random chance
             wizard.regenerate()
             wizard.attack(player)
 
