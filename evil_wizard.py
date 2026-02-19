@@ -26,7 +26,7 @@ class Character:
         total_damage = self.random_power #initializing total_damage before modifying it
         damage = self.random_power #localizing variable so they can be modified
         total_damage = damage
-        opponent.health -= self.random_power
+       
         print(f"{self.name} attacks {opponent.name} for {self.random_power} damage!")
 
          #this function checks if evade being used and resets evade to 0
@@ -72,8 +72,8 @@ class Character:
         #The Dark Wizard can randomly generate super strike, a strike 3x the original power
         if random.random() < self.superstrike_chance:
             ss_damage = damage * 3
-            opponent.health -= ss_damage
-            print{f'{self.name} uses superstike for 3x damage! Damage: {ss_damage}.'}
+            damage = ss_damage
+            print(f'{self.name} uses superstike for 3x damage! Damage: {ss_damage}.')
         
         opponent.health -= damage
         # redundant print(f'{self.name} attacks {opponent.name} for {damage} damage')
@@ -119,7 +119,7 @@ class Mage(Character):
     def special_ability(self, opponent=None):
         damage = random.randint(max(1, self.attack_power - 10), self.attack_power)
         self.health -= damage #Mage loses the original amount of damage in health for this ability
-        print(f'{self.name} uses Superbold and sacrifices {damage} health. Current health: {self.health}/{self.max_health}')
+        print(f'{self.name} uses Superbolt and sacrifices {damage} health. Current health: {self.health}/{self.max_health}')
         double_damage = damage * 2
         opponent.health = double_damage
         print(f'Superbolt hits {opponent.name} for {double_damage} damage.')
