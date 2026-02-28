@@ -43,10 +43,13 @@ class Character:
 
         #double_shot - This function checks if double shot is triggered.  It generates a random float (0-1) and compares it to the double shot chance, then moves on from there
         if random.random() < self.double_shot_chance:
-            extra_damage = random.randint(max(1, self.attack_power - 10), self.attack_power)
-            opponent.health -= extra_damage
-            total_damage += extra_damage #initializing total_damage before modifying it
-            print(f'{self.name} fires Double Shot for an extra {total_damage} damage!')
+            #This caused an extra roll of damage creating confusion when attacking
+            # extra_damage = random.randint(max(1, self.attack_power - 10), self.attack_power) * 2
+            # opponent.health -= extra_damage
+            # total_damage = extra_damage #initializing total_damage before modifying it
+            damage *= 2 #this increases the original damage 2x
+            print(f'{self.name} fires Double Shot for {damage} damage!')
+            
         
         #Holy Strike
         if random.random() < self.holy_strike_chance:
@@ -60,6 +63,7 @@ class Character:
             damage = opponent.health
             opponent.health -= damage
             print(f'{self.name} uses the Execute attack, deals {damage} damage.')
+            
         #Warrior wall.  Reduces damage for certain number of turns.  Is triggered by engaging the special ability
         if opponent.wall > 0: 
             damage = damage // 4
