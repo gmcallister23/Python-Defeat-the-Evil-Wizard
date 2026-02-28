@@ -56,14 +56,15 @@ class Character:
             bonus_damage = int(damage * .25) #updating the value to an int
             opponent.health -= bonus_damage
             total_damage += bonus_damage
-            print(f'{self.name} uses Holy Strike for an additional {bonus_damage} damage, causing {total_damage} damage!')
+            damage = total_damage
+            print(f'{self.name} uses Holy Strike for {bonus_damage} damage, causing {total_damage} damage!')
 
         #Execute - this is an attack that has a really low chance of occurence, but will complete kill the opponent
         if random.random() < self.execute_chance:
             damage = opponent.health
             opponent.health -= damage
             print(f'{self.name} uses the Execute attack, deals {damage} damage.')
-            
+
         #Warrior wall.  Reduces damage for certain number of turns.  Is triggered by engaging the special ability
         if opponent.wall > 0: 
             damage = damage // 4
