@@ -63,7 +63,7 @@ class Character:
         #Execute - this is an attack that has a really low chance of occurence, but will complete kill the opponent
         if random.random() < self.execute_chance:
             damage = opponent.health
-            opponent.health -= damage
+            #opponent.health -= damage - redundant, messes with attack and damage system
             print(f'{self.name} uses the Execute attack, deals {damage} damage.')
 
         #Warrior wall.  Reduces damage for certain number of turns.  Is triggered by engaging the special ability
