@@ -85,7 +85,7 @@ class Character:
         opponent.health -= damage
         # redundant print(f'{self.name} attacks {opponent.name} for {damage} damage')
 
-        print(f'Total damage dealt: {total_damage}')
+        #print(f'Total damage dealt: {total_damage}') - redundant - this is printed after the wizard attacks and after each character attack
 
 
         if opponent.health <= 0:
