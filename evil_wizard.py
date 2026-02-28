@@ -128,7 +128,7 @@ class Mage(Character):
         self.health -= damage #Mage loses the original amount of damage in health for this ability
         print(f'{self.name} uses Superbolt and sacrifices {damage} health. Current health: {self.health}/{self.max_health}')
         double_damage = damage * 2
-        opponent.health = double_damage
+        opponent.health -= double_damage
         print(f'Superbolt hits {opponent.name} for {double_damage} damage.')
 
 # EvilWizard class (inherits from Character)
