@@ -53,11 +53,12 @@ class Character:
         
         #Holy Strike
         if random.random() < self.holy_strike_chance:
+            
             bonus_damage = int(damage * .25) #updating the value to an int
-            opponent.health -= bonus_damage
-            total_damage += bonus_damage
-            damage = total_damage
-            print(f'{self.name} uses Holy Strike for {bonus_damage} damage, causing {total_damage} damage!')
+            #opponent.health -= bonus_damage redundnat - already subtracting damage at then end of the attack class
+            #total_damage += bonus_damage - storing and adding damage in too many places - creates confusion
+            damage += bonus_damage #Adding bonus damage to damage total, this will now apply the damage
+            print(f'{self.name} uses Holy Strike for {bonus_damage} damage, causing {damage} total damage!')
 
         #Execute - this is an attack that has a really low chance of occurence, but will complete kill the opponent
         if random.random() < self.execute_chance:
