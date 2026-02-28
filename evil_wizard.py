@@ -148,10 +148,13 @@ class EvilWizard(Character):
         if self.immunity_cloak == 0 and random.random() < 0.33: #sets the random chance of invincibility
             self.immunity_cloak = 2
             print(f'{self.name} becomes temporarily invincible for 2 turns')
-
+    # Oringinally the wizard could regenerate health above max health, adjusted so the wizard cannot go above max_health
     def regenerate(self):
-        self.health += 5
-        print(f"{self.name} regenerates 5 health! Current health: {self.health}")
+        old_health = self.health #storing current health in a variable
+        self.health = min(self.max_health, self.health + 5) #check to make sure that the wizard doesn't over generate - if we have 148+5 = 153, 150 < 153, defaults to 150.
+
+        if self.health > old_health:
+            print(f"{self.name} regenerates 5 health! Current health: {self.health}/{self.max_health}")
 
 # Create Archer class
 class Archer(Character):
