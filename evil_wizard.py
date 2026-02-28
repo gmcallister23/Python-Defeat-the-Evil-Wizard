@@ -89,6 +89,8 @@ class Character:
             return
         
         opponent.health -= damage
+
+        print(f'{opponent.name}: {opponent.health}/{opponent.max_health}')
         # redundant print(f'{self.name} attacks {opponent.name} for {damage} damage')
 
         #print(f'Total damage dealt: {total_damage}') - redundant - this is printed after the wizard attacks and after each character attack
